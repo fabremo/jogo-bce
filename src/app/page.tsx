@@ -7,33 +7,74 @@ import {
   useDraggable,
   useDroppable,
 } from "@dnd-kit/react";
-import { Check, RotateCcw, Sparkles } from "lucide-react";
+import { Check, RotateCcw, Sparkles, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-const pares = [
+
+//restaurante
+const paresX = [
   { id: 1, esquerda: "um café", direita: "a coffee" },
   { id: 2, esquerda: "um chá", direita: "a tea" },
-  { id: 3, esquerda: "água", direita: "water" },
+  { id: 3, esquerda: "água", direita: "some water" },
   { id: 4, esquerda: "um copo de água", direita: "a glass of water" },
-  { id: 5, esquerda: "a conta", direita: "the bill" },
-  { id: 6, esquerda: "o cardápio", direita: "the menu" },
+  { id: 5, esquerda: "o cardápio", direita: "the menu" },
+  { id: 6, esquerda: "a conta", direita: "the bill" },
   { id: 7, esquerda: "um sanduíche", direita: "a sandwich" },
   { id: 8, esquerda: "uma salada", direita: "a salad" },
   { id: 9, esquerda: "uma pizza", direita: "a pizza" },
-  { id: 10, esquerda: "um suco", direita: "a juice" },
-  { id: 11, esquerda: "um refrigerante", direita: "a soda" },
-  { id: 12, esquerda: "mais pão", direita: "more bread" },
-  { id: 13, esquerda: "mais água", direita: "more water" },
-  { id: 14, esquerda: "um guardanapo", direita: "a napkin" },
-  { id: 15, esquerda: "um garfo", direita: "a fork" },
-  { id: 16, esquerda: "uma faca", direita: "a knife" },
-  { id: 17, esquerda: "uma colher", direita: "a spoon" },
-  { id: 18, esquerda: "ketchup", direita: "ketchup" },
-  { id: 19, esquerda: "mostarda", direita: "mustard" },
-  { id: 20, esquerda: "a sobremesa", direita: "dessert" },
+  { id: 10, esquerda: "um hambúrguer", direita: "a burger" },
+  { id: 11, esquerda: "batata frita", direita: "some fries" },
+  { id: 12, esquerda: "um suco de laranja", direita: "an orange juice" },
+  { id: 13, esquerda: "um refrigerante", direita: "a soda" },
+  { id: 14, esquerda: "mais água", direita: "some more water" },
+  { id: 15, esquerda: "mais pão", direita: "some more bread" },
+  { id: 16, esquerda: "um guardanapo", direita: "a napkin" },
+  { id: 17, esquerda: "um garfo", direita: "a fork" },
+  { id: 18, esquerda: "uma faca", direita: "a knife" },
+  { id: 19, esquerda: "uma colher", direita: "a spoon" },
+  { id: 20, esquerda: "ketchup", direita: "some ketchup" },
 ];
+
+//Para simular outras situações
+void paresX;
+const pares = [
+  { id: 1, esquerda: "a chave do quarto", direita: "the room key" },
+  { id: 2, esquerda: "uma toalha extra", direita: "an extra towel" },
+  { id: 3, esquerda: "um travesseiro extra", direita: "an extra pillow" },
+  { id: 4, esquerda: "um cobertor extra", direita: "an extra blanket" },
+  { id: 5, esquerda: "mais papel higiênico", direita: "some more toilet paper" },
+  { id: 6, esquerda: "mais sabonete", direita: "some more soap" },
+  { id: 7, esquerda: "mais shampoo", direita: "some more shampoo" },
+  { id: 8, esquerda: "a senha do wi-fi", direita: "the Wi-Fi password" },
+  { id: 9, esquerda: "um mapa da cidade", direita: "a city map" },
+  { id: 10, esquerda: "um quarto silencioso", direita: "a quiet room" },
+  { id: 11, esquerda: "um quarto com vista", direita: "a room with a view" },
+  { id: 12, esquerda: "um quarto no andar de cima", direita: "a room on a higher floor" },
+  { id: 13, esquerda: "um despertador às 6", direita: "a wake-up call at 6" },
+  { id: 14, esquerda: "a nota fiscal", direita: "the receipt" },
+  { id: 15, esquerda: "a conta", direita: "the bill" },
+  { id: 16, esquerda: "ajuda com a bagagem", direita: "help with the luggage" },
+  { id: 17, esquerda: "um táxi", direita: "a taxi" },
+  { id: 18, esquerda: "água", direita: "some water" },
+  { id: 19, esquerda: "mais tempo", direita: "some more time" },
+  { id: 20, esquerda: "check-out tardio", direita: "a late check-out" },
+];
+
+
+
+const ROUND_SIZE = 5;
+const MATERIAL_PDF_PATH = "/material.pdf";
 
 type PairId = (typeof pares)[number]["id"];
 type Placements = Partial<Record<PairId, PairId>>;
@@ -51,12 +92,16 @@ type FlyingMatch = {
 };
 
 export default function Home() {
+  const [roundPairs, setRoundPairs] = useState(() => pares.slice(0, ROUND_SIZE));
   // `placements` guarda quais slots da direita já foram preenchidos corretamente.
   const [placements, setPlacements] = useState<Placements>({});
   // O item ativo alimenta o overlay visual enquanto o card está sendo arrastado.
   const [activeSourceId, setActiveSourceId] = useState<PairId | null>(null);
   // A coluna da direita embaralha só no cliente para evitar hydration mismatch.
-  const [rightColumnOrder, setRightColumnOrder] = useState(pares);
+  const [rightColumnOrder, setRightColumnOrder] = useState(() =>
+    pares.slice(0, ROUND_SIZE)
+  );
+  const [isCompletionDialogOpen, setIsCompletionDialogOpen] = useState(false);
   // `recentMatchId` dispara o feedback curto de acerto nos dois lados.
   const [recentMatchId, setRecentMatchId] = useState<PairId | null>(null);
   // `flyingMatch` desenha uma cópia temporária do card cruzando da esquerda para a direita.
@@ -65,31 +110,50 @@ export default function Home() {
   const sourceRefs = useRef(new Map<PairId, HTMLDivElement | null>());
   const targetRefs = useRef(new Map<PairId, HTMLDivElement | null>());
 
-  const total = pares.length;
+  const total = roundPairs.length;
   const acertos = Object.keys(placements).length;
   const concluiu = acertos === total;
 
   const palavrasAtivas = useMemo(
-    () => pares.filter((par) => placements[par.id] == null),
-    [placements]
+    () => roundPairs.filter((par) => placements[par.id] == null),
+    [placements, roundPairs]
   );
 
   function resetGame() {
+    const nextRound = pickRandomPairs(pares, ROUND_SIZE);
+
     setPlacements({});
     setActiveSourceId(null);
+    setIsCompletionDialogOpen(false);
     setRecentMatchId(null);
     setFlyingMatch(null);
-    setRightColumnOrder(shufflePairs(pares));
+    setRoundPairs(nextRound);
+    setRightColumnOrder(shufflePairs(nextRound));
   }
 
   useEffect(() => {
     // Faz o primeiro embaralhamento após o mount para manter o HTML inicial estável.
     const timeout = window.setTimeout(() => {
-      setRightColumnOrder(shufflePairs(pares));
+      const nextRound = pickRandomPairs(pares, ROUND_SIZE);
+
+      setRoundPairs(nextRound);
+      setRightColumnOrder(shufflePairs(nextRound));
     }, 0);
 
     return () => window.clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    if (!concluiu) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setIsCompletionDialogOpen(true);
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, [concluiu]);
 
   useEffect(() => {
     if (recentMatchId == null) {
@@ -129,11 +193,11 @@ export default function Home() {
               </span>
               <div className="space-y-3">
                 <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-                  Ligue a palavra em inglês ao significado em português.
+                  Forme o BCE ligando a palavra em português ao significado em inglês.
                 </h1>
                 <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
                   Arrastou no lugar certo, pontuou. Quando todos os pares forem
-                  encaixados, o tabuleiro fecha com pontuação máxima.
+                  encaixados, o tabuleiro fecha com pontuação máxima e você libera seu prêmio.
                 </p>
               </div>
             </div>
@@ -170,7 +234,8 @@ export default function Home() {
                 setFlyingMatch({
                   id: sourceId,
                   word:
-                    pares.find((par) => par.id === sourceId)?.esquerda ?? "",
+                    roundPairs.find((par) => par.id === sourceId)?.esquerda ??
+                    "",
                   from: getBoxSnapshot(sourceElement),
                   to: getBoxSnapshot(targetElement),
                 });
@@ -191,7 +256,7 @@ export default function Home() {
               <div className="mb-4 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    Inglês
+                    Can I Have... + Complemento
                   </p>
                   <h2 className="text-2xl font-bold text-slate-900">
                     Arraste estes cards
@@ -203,7 +268,7 @@ export default function Home() {
               </div>
 
               <div className="space-y-3">
-                {pares.map((par) => (
+                {roundPairs.map((par) => (
                   <DraggableWord
                     key={par.id}
                     pair={par}
@@ -299,6 +364,63 @@ export default function Home() {
               : "Continue arrastando as palavras para completar o quadro."}
           </p>
         </section>
+
+        <Dialog
+          open={concluiu && isCompletionDialogOpen}
+          onOpenChange={setIsCompletionDialogOpen}
+        >
+          <DialogContent>
+            <DialogClose
+              className="absolute right-4 top-4 inline-flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900"
+              aria-label="Fechar popup"
+            >
+              <X className="size-4" />
+            </DialogClose>
+            <DialogHeader>
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">
+                <Check className="size-3.5" />
+                Desbloqueado
+              </div>
+              <DialogTitle>Parabéns, atividade concluída.</DialogTitle>
+              <DialogDescription>
+                Você fechou a rodada com {acertos} de {total} acertos. O material
+                em PDF esta liberado para continuar o estudo.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                Premio liberado
+              </p>
+              <p className="mt-2 text-lg font-semibold text-slate-900">
+                Material complementar em PDF
+              </p>
+              <p className="mt-1 text-sm leading-6 text-slate-600">
+                Clique para abrir o arquivo em uma nova aba.
+              </p>
+            </div>
+
+            <DialogFooter>
+              <Button
+                variant="outline"
+                className="h-11 rounded-2xl border-slate-200 bg-white px-5"
+                onClick={resetGame}
+              >
+                <RotateCcw className="size-4" />
+                Jogar novamente
+              </Button>
+              <Button asChild className="h-11 rounded-2xl px-5">
+                <a
+                  href={MATERIAL_PDF_PATH}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Abrir material em PDF
+                </a>
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
@@ -479,6 +601,10 @@ function shufflePairs(items: typeof pares) {
   }
 
   return shuffled;
+}
+
+function pickRandomPairs(items: typeof pares, size: number) {
+  return shufflePairs(items).slice(0, size);
 }
 
 function getBoxSnapshot(element: Element): BoxSnapshot {
