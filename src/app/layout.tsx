@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Montserrat } from "next/font/google";
-
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { montserrat } from "@/lib/fonts";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Jogo BCE",
@@ -22,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", inter.variable)}>
+    <html lang="en" className={cn("font-sans", montserrat.variable)}>
       <body
         className={`${montserrat.className} antialiased`}
       >

@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
+
 //restaurante
 const paresX = [
   { id: 1, esquerda: "um café", direita: "a coffee" },
@@ -166,7 +167,7 @@ export default function Home() {
   }, [flyingMatch]);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(241,245,249,0.92)_35%,_rgba(226,232,240,0.88)_100%)] px-4 py-8 text-foreground sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.95),rgba(241,245,249,0.92)_35%,rgba(226,232,240,0.88)_100%)] px-4 py-8 text-foreground sm:px-6 lg:px-8">
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8">
         <section className="overflow-hidden rounded-3xl border border-white/70 bg-white/85 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -176,8 +177,8 @@ export default function Home() {
                 Arraste e associe
               </span>
               <div className="space-y-3">
-                <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-                  Forme o BCE ligando a palavra em português ao significado em inglês.
+                <h1 className="tracking-tight text-4xl font-black  text-slate-900 sm:text-5xl">
+                  Forme o <span className="text-orange-500">BCE</span> ligando a palavra em português ao significado em inglês.
                 </h1>
                 <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
                   Arrastou no lugar certo, pontuou. Quando todos os pares forem
