@@ -1,5 +1,11 @@
 import Image from "next/image";
 
+const pares = [
+  { id: 1, esquerda: "dog", direita: "cachorro" },
+  { id: 2, esquerda: "house", direita: "casa" },
+  { id: 3, esquerda: "water", direita: "água" },
+];
+
 export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
