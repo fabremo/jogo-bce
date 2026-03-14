@@ -1,10 +1,12 @@
-﻿import { cn } from "@/lib/utils";
+﻿import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type GameStatusProps = {
   concluiu: boolean;
+  materialPdfPath: string;
 };
 
-export function GameStatus({ concluiu }: GameStatusProps) {
+export function GameStatus({ concluiu, materialPdfPath }: GameStatusProps) {
   return (
     <section
       className={cn(
@@ -22,6 +24,13 @@ export function GameStatus({ concluiu }: GameStatusProps) {
           ? "Perfeito. Todos os pares foram associados."
           : "Continue arrastando as palavras para completar o quadro."}
       </p>
+      {concluiu ? (
+        <Button asChild className="mt-4 h-11 w-full rounded-2xl px-5 sm:w-auto bg-green-600">
+          <a href={materialPdfPath} target="_blank" rel="noopener noreferrer">
+            Abrir material em PDF
+          </a>
+        </Button>
+      ) : null}
     </section>
   );
 }

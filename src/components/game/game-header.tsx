@@ -12,16 +12,23 @@ type GameHeaderProps = {
 
 export function GameHeader({ acertos, total, onReset }: GameHeaderProps) {
   return (
-    <section className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
-      <ScoreCard label="Acertos" value={`${acertos}/${total}`} />
-      <Button
-        variant="outline"
-        className="h-12 w-full rounded-2xl border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 sm:w-auto"
-        onClick={onReset}
-      >
-        <RotateCcw className="size-4" />
-        Reiniciar
-      </Button>
+    <section className="flex flex-col gap-3">
+      <div className="flex justify-center">
+        <p className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-center text-md font-bold tracking-[0.18em] text-emerald-700 shadow-sm sm:px-5 sm:py-2 sm:text-sm sm:tracking-[0.24em]">
+          Can I Have... + Complemento
+        </p>
+      </div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+        <ScoreCard label="Acertos" value={`${acertos}/${total}`} />
+        <Button
+          variant="outline"
+          className="h-12 w-full rounded-2xl border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 sm:w-auto"
+          onClick={onReset}
+        >
+          <RotateCcw className="size-4" />
+          Reiniciar
+        </Button>
+      </div>
     </section>
   );
 }

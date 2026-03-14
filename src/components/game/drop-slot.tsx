@@ -47,7 +47,7 @@ export function DropSlot({
         <div className="min-w-0">
           <p
             className={cn(
-              "mt-1 break-words text-sm font-black leading-tight sm:text-2xl",
+              "mt-1 wrap-break-word text-sm font-black leading-tight sm:text-2xl",
               preenchido ? "text-slate-900" : "text-white"
             )}
           >

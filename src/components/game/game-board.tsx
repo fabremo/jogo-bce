@@ -194,7 +194,7 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
         ) : null}
       </DragDropProvider>
 
-      <GameStatus concluiu={concluiu} />
+      <GameStatus concluiu={concluiu} materialPdfPath={materialPdfPath} />
 
       <CompletionDialog
         open={concluiu && isCompletionDialogOpen}
