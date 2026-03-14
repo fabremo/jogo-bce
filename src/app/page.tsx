@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-
 //restaurante
 const paresX = [
   { id: 1, esquerda: "um café", direita: "a coffee" },
@@ -70,9 +69,6 @@ const pares = [
   { id: 19, esquerda: "mais tempo", direita: "some more time" },
   { id: 20, esquerda: "check-out tardio", direita: "a late check-out" },
 ];
-
-
-
 const ROUND_SIZE = 5;
 const MATERIAL_PDF_PATH = "/material.pdf";
 const MATCH_POP_DURATION_MS = 650;
@@ -87,7 +83,6 @@ type BoxSnapshot = {
 };
 type FlyingMatch = {
   id: PairId;
-  word: string;
   from: BoxSnapshot;
   to: BoxSnapshot;
 };
@@ -223,9 +218,6 @@ export default function Home() {
                 // Capturamos origem e destino antes de atualizar o layout para animar o "encaixe".
                 setFlyingMatch({
                   id: sourceId,
-                  word:
-                    roundPairs.find((par) => par.id === sourceId)?.esquerda ??
-                    "",
                   from: getBoxSnapshot(sourceElement),
                   to: getBoxSnapshot(targetElement),
                 });
@@ -263,7 +255,7 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="space-y-3 ">
+              <div className="space-y-3">
                 {roundPairs.map((par) => (
                   <DraggableWord
                     key={par.id}
@@ -470,7 +462,6 @@ function DraggableWord({
     >
       <div className="flex items-center justify-between gap-4">
         <div>
-
           <p className="mt-1 text-2xl font-black">{pair.esquerda}</p>
         </div>
 
@@ -520,13 +511,6 @@ function DropSlot({
     >
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p
-            className={cn(
-              "text-xs font-semibold uppercase tracking-[0.18em]",
-              preenchido ? "text-slate-500" : "text-slate-400"
-            )}
-          >
-          </p>
           <p
             className={cn(
               "mt-1 text-2xl font-black",
