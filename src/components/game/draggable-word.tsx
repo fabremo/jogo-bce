@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useDraggable } from "@dnd-kit/react";
 
@@ -33,7 +33,7 @@ export function DraggableWord({
         onMount(element as HTMLDivElement | null);
       }}
       className={cn(
-        "select-none rounded-2xl border px-5 py-4 transition-all",
+        "select-none rounded-xl border px-2.5 py-2.5 transition-all sm:rounded-2xl sm:px-5 sm:py-4",
         matched
           ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 shadow-none"
           : "cursor-grab border-slate-200 bg-white text-slate-900 shadow-sm hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md",
@@ -42,13 +42,15 @@ export function DraggableWord({
         flyingOut && "opacity-25 saturate-0"
       )}
     >
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <p className="mt-1 text-2xl font-black">{pair.esquerda}</p>
+      <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <div className="min-w-0">
+          <p className="mt-1 break-words text-sm font-black leading-tight sm:text-2xl">
+            {pair.esquerda}
+          </p>
         </div>
 
         {matched ? null : (
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600">
+          <span className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] font-medium text-slate-600 sm:px-3 sm:text-sm">
             Arraste
           </span>
         )}

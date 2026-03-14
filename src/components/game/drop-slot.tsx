@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Check } from "lucide-react";
 import { useDroppable } from "@dnd-kit/react";
@@ -35,7 +35,7 @@ export function DropSlot({
         onMount(element as HTMLDivElement | null);
       }}
       className={cn(
-        "rounded-2xl border px-5 py-4 transition-all",
+        "rounded-xl border px-2.5 py-2.5 transition-all sm:rounded-2xl sm:px-5 sm:py-4",
         preenchido
           ? "border-emerald-200 bg-emerald-50 text-emerald-900 shadow-sm"
           : "border-white/12 bg-white/6",
@@ -43,11 +43,11 @@ export function DropSlot({
         celebrating && "animate-match-pop"
       )}
     >
-      <div className="flex items-center justify-between gap-4">
-        <div>
+      <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <div className="min-w-0">
           <p
             className={cn(
-              "mt-1 text-2xl font-black",
+              "mt-1 break-words text-sm font-black leading-tight sm:text-2xl",
               preenchido ? "text-slate-900" : "text-white"
             )}
           >
@@ -56,12 +56,12 @@ export function DropSlot({
         </div>
 
         {preenchido ? (
-          <span className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-3 py-1 text-sm font-semibold text-white">
-            <Check className="size-4" />
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-semibold text-white sm:gap-2 sm:px-3 sm:text-sm">
+            <Check className="size-3 sm:size-4" />
             Acertou
           </span>
         ) : (
-          <span className="rounded-full border border-dashed border-white/25 px-3 py-1 text-sm font-medium text-slate-300">
+          <span className="shrink-0 rounded-full border border-dashed border-white/25 px-2 py-1 text-[10px] font-medium text-slate-300 sm:px-3 sm:text-sm">
             Solte aqui
           </span>
         )}

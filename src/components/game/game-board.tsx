@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react";
@@ -133,7 +133,7 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
           setActiveSourceId(null);
         }}
       >
-        <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <section className="grid grid-cols-2 gap-3 sm:gap-6">
           <GameSourceColumn
             roundPairs={roundPairs}
             placements={placements}
@@ -157,7 +157,7 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
 
         <DragOverlay className="pointer-events-none fixed left-0 top-0 z-50">
           {activeSourceId != null ? (
-            <div className="rounded-2xl border border-emerald-300 bg-emerald-100 px-5 py-4 text-base font-bold text-emerald-950 shadow-2xl">
+            <div className="max-w-[44vw] rounded-2xl border border-emerald-300 bg-emerald-100 px-3 py-2.5 text-xs font-bold text-emerald-950 shadow-2xl sm:max-w-none sm:px-5 sm:py-4 sm:text-base">
               Can I have...
             </div>
           ) : null}
@@ -165,7 +165,7 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
 
         {flyingMatch != null ? (
           <div
-            className="pointer-events-none fixed z-60 rounded-2xl border border-emerald-300 bg-emerald-100 px-5 py-4 text-base font-bold text-emerald-950 shadow-2xl animate-match-transfer"
+            className="pointer-events-none fixed z-60 rounded-2xl border border-emerald-300 bg-emerald-100 px-3 py-2.5 text-xs font-bold text-emerald-950 shadow-2xl animate-match-transfer sm:px-5 sm:py-4 sm:text-base"
             style={
               {
                 top: `${flyingMatch.from.top}px`,
@@ -179,14 +179,14 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
               } as CSSProperties
             }
           >
-            <div className="flex h-full items-center justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+            <div className="flex h-full items-center justify-between gap-2 sm:gap-4">
+              <div className="min-w-0">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-emerald-700 sm:text-xs sm:tracking-[0.18em]">
                   Palavra
                 </p>
-                <p className="mt-1 text-2xl font-black">Can I have...</p>
+                <p className="mt-1 text-sm font-black sm:text-2xl">Can I have...</p>
               </div>
-              <span className="rounded-full bg-emerald-600 px-3 py-1 text-sm font-semibold text-white">
+              <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-semibold text-white sm:px-3 sm:text-sm">
                 Encaixando
               </span>
             </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { RotateCcw } from "lucide-react";
 
@@ -12,11 +12,11 @@ type GameHeaderProps = {
 
 export function GameHeader({ acertos, total, onReset }: GameHeaderProps) {
   return (
-    <section className="flex flex-col gap-3 sm:flex-row">
+    <section className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
       <ScoreCard label="Acertos" value={`${acertos}/${total}`} />
       <Button
         variant="outline"
-        className="h-12 rounded-2xl border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+        className="h-12 w-full rounded-2xl border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 sm:w-auto"
         onClick={onReset}
       >
         <RotateCcw className="size-4" />
@@ -28,11 +28,11 @@ export function GameHeader({ acertos, total, onReset }: GameHeaderProps) {
 
 function ScoreCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+    <div className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 sm:w-auto">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 sm:text-xs sm:tracking-[0.18em]">
         {label}
       </p>
-      <p className="text-2xl font-black text-slate-900">{value}</p>
+      <p className="text-xl font-black text-slate-900 sm:text-2xl">{value}</p>
     </div>
   );
 }
