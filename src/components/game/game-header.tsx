@@ -14,11 +14,11 @@ export function GameHeader({ acertos, total, onReset }: GameHeaderProps) {
   return (
     <section className="flex flex-col gap-3">
       <div className="flex justify-center">
-        <p className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-center text-md font-bold tracking-[0.18em] text-emerald-700 shadow-sm sm:px-5 sm:py-2 sm:text-sm sm:tracking-[0.24em]">
+        <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-center text-xl font-bold tracking-[0.18em] text-emerald-700 shadow-sm sm:px-5 sm:py-2 sm:text-2xl sm:tracking-[0.24em]">
           Can I Have... + Complemento
         </p>
       </div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch text-center">
         <ScoreCard label="Acertos" value={`${acertos}/${total}`} />
         <Button
           variant="outline"
