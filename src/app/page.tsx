@@ -75,6 +75,7 @@ const pares = [
 
 const ROUND_SIZE = 5;
 const MATERIAL_PDF_PATH = "/material.pdf";
+const MATCH_POP_DURATION_MS = 650;
 
 type PairId = (typeof pares)[number]["id"];
 type Placements = Partial<Record<PairId, PairId>>;
@@ -144,18 +145,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!concluiu) {
-      return;
-    }
-
-    const timeout = window.setTimeout(() => {
-      setIsCompletionDialogOpen(true);
-    }, 0);
-
-    return () => window.clearTimeout(timeout);
-  }, [concluiu]);
-
-  useEffect(() => {
     if (recentMatchId == null) {
       return;
     }
@@ -163,7 +152,7 @@ export default function Home() {
     // Limpa a animação curta de acerto para que ela possa ser reutilizada no próximo par.
     const timeout = window.setTimeout(() => {
       setRecentMatchId(null);
-    }, 650);
+    }, MATCH_POP_DURATION_MS);
 
     return () => window.clearTimeout(timeout);
   }, [recentMatchId]);
@@ -228,6 +217,7 @@ export default function Home() {
             if (!event.canceled && sourceId != null && targetId === sourceId) {
               const sourceElement = sourceRefs.current.get(sourceId);
               const targetElement = targetRefs.current.get(targetId);
+              const isLastMatch = acertos + 1 === total;
 
               if (sourceElement && targetElement) {
                 // Capturamos origem e destino antes de atualizar o layout para animar o "encaixe".
@@ -246,6 +236,12 @@ export default function Home() {
                 [targetId]: sourceId,
               }));
               setRecentMatchId(targetId);
+
+              if (isLastMatch) {
+                window.setTimeout(() => {
+                  setIsCompletionDialogOpen(true);
+                }, MATCH_POP_DURATION_MS);
+              }
             }
 
             setActiveSourceId(null);
@@ -267,7 +263,7 @@ export default function Home() {
                 </span>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-3 ">
                 {roundPairs.map((par) => (
                   <DraggableWord
                     key={par.id}
@@ -474,9 +470,7 @@ function DraggableWord({
     >
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-            Palavra
-          </p>
+
           <p className="mt-1 text-2xl font-black">{pair.esquerda}</p>
         </div>
 
@@ -532,7 +526,6 @@ function DropSlot({
               preenchido ? "text-slate-500" : "text-slate-400"
             )}
           >
-            {preenchido ? "Palavra" : "Significado"}
           </p>
           <p
             className={cn(
