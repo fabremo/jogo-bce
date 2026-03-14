@@ -50,7 +50,7 @@ export function DraggableWord({
         </div>
 
         {matched ? null : (
-          <span className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] font-medium text-slate-600 sm:px-3 sm:text-sm">
+          <span className="hidden shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] font-medium text-slate-600 sm:inline-flex sm:px-3 sm:text-sm">
             Arraste
           </span>
         )}

@@ -61,7 +61,7 @@ export function DropSlot({
             Acertou
           </span>
         ) : (
-          <span className="shrink-0 rounded-full border border-dashed border-white/25 px-2 py-1 text-[10px] font-medium text-slate-300 sm:px-3 sm:text-sm">
+          <span className="hidden shrink-0 rounded-full border border-dashed border-white/25 px-2 py-1 text-[10px] font-medium text-slate-300 sm:inline-flex sm:px-3 sm:text-sm">
             Solte aqui
           </span>
         )}
