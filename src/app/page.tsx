@@ -13,26 +13,26 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const pares = [
-  { id: 1, esquerda: "dog", direita: "cachorro" },
-  { id: 2, esquerda: "house", direita: "casa" },
-  { id: 3, esquerda: "water", direita: "água" },
-  { id: 4, esquerda: "pink", direita: "rosa" },
-  { id: 5, esquerda: "head", direita: "cabeça" },
-  { id: 6, esquerda: "cat", direita: "gato" },
-  { id: 7, esquerda: "car", direita: "carro" },
-  { id: 8, esquerda: "book", direita: "livro" },
-  { id: 9, esquerda: "sun", direita: "sol" },
-  { id: 10, esquerda: "moon", direita: "lua" },
-  { id: 11, esquerda: "tree", direita: "árvore" },
-  { id: 12, esquerda: "door", direita: "porta" },
-  { id: 13, esquerda: "chair", direita: "cadeira" },
-  { id: 14, esquerda: "table", direita: "mesa" },
-  { id: 15, esquerda: "hand", direita: "mão" },
-  { id: 16, esquerda: "foot", direita: "pé" },
-  { id: 17, esquerda: "milk", direita: "leite" },
-  { id: 18, esquerda: "bread", direita: "pão" },
-  { id: 19, esquerda: "school", direita: "escola" },
-  { id: 20, esquerda: "window", direita: "janela" },
+  { id: 1, esquerda: "um café", direita: "a coffee" },
+  { id: 2, esquerda: "um chá", direita: "a tea" },
+  { id: 3, esquerda: "água", direita: "water" },
+  { id: 4, esquerda: "um copo de água", direita: "a glass of water" },
+  { id: 5, esquerda: "a conta", direita: "the bill" },
+  { id: 6, esquerda: "o cardápio", direita: "the menu" },
+  { id: 7, esquerda: "um sanduíche", direita: "a sandwich" },
+  { id: 8, esquerda: "uma salada", direita: "a salad" },
+  { id: 9, esquerda: "uma pizza", direita: "a pizza" },
+  { id: 10, esquerda: "um suco", direita: "a juice" },
+  { id: 11, esquerda: "um refrigerante", direita: "a soda" },
+  { id: 12, esquerda: "mais pão", direita: "more bread" },
+  { id: 13, esquerda: "mais água", direita: "more water" },
+  { id: 14, esquerda: "um guardanapo", direita: "a napkin" },
+  { id: 15, esquerda: "um garfo", direita: "a fork" },
+  { id: 16, esquerda: "uma faca", direita: "a knife" },
+  { id: 17, esquerda: "uma colher", direita: "a spoon" },
+  { id: 18, esquerda: "ketchup", direita: "ketchup" },
+  { id: 19, esquerda: "mostarda", direita: "mustard" },
+  { id: 20, esquerda: "a sobremesa", direita: "dessert" },
 ];
 
 type PairId = (typeof pares)[number]["id"];
@@ -246,7 +246,7 @@ export default function Home() {
             {activeSourceId != null ? (
               // O overlay mantém o card fora do fluxo da página durante o drag.
               <div className="rounded-2xl border border-emerald-300 bg-emerald-100 px-5 py-4 text-base font-bold text-emerald-950 shadow-2xl">
-                {pares.find((par) => par.id === activeSourceId)?.esquerda}
+                Can I have...
               </div>
             ) : null}
           </DragOverlay>
@@ -272,7 +272,7 @@ export default function Home() {
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
                     Palavra
                   </p>
-                  <p className="mt-1 text-2xl font-black">{flyingMatch.word}</p>
+                  <p className="mt-1 text-2xl font-black">Can I have...</p>
                 </div>
                 <span className="rounded-full bg-emerald-600 px-3 py-1 text-sm font-semibold text-white">
                   Encaixando
