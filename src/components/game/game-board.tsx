@@ -1,11 +1,18 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react";
 
 import { CompletionDialog } from "@/components/game/completion-dialog";
 import {
   type FlyingMatch,
+  type GameMode,
   type Pair,
   type PairId,
   type Placements,
@@ -24,48 +31,69 @@ import {
 } from "@/components/game/game-utils";
 
 type GameBoardProps = {
-  pairs: Pair[];
+  modes: GameMode[];
   roundSize: number;
   materialPdfPath: string;
 };
 
-export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps) {
-  const [roundPairs, setRoundPairs] = useState(() => pairs.slice(0, roundSize));
+const EMPTY_PAIRS: Pair[] = [];
+
+export function GameBoard({ modes, roundSize, materialPdfPath }: GameBoardProps) {
+  const [selectedModeId, setSelectedModeId] = useState(() => modes[0]?.id ?? "");
+  const [roundPairs, setRoundPairs] = useState<Pair[]>([]);
   const [placements, setPlacements] = useState<Placements>({});
   const [activeSourceId, setActiveSourceId] = useState<PairId | null>(null);
-  const [rightColumnOrder, setRightColumnOrder] = useState(() => pairs.slice(0, roundSize));
+  const [rightColumnOrder, setRightColumnOrder] = useState<Pair[]>([]);
   const [isCompletionDialogOpen, setIsCompletionDialogOpen] = useState(false);
   const [recentMatchId, setRecentMatchId] = useState<PairId | null>(null);
   const [flyingMatch, setFlyingMatch] = useState<FlyingMatch | null>(null);
   const sourceRefs = useRef(new Map<PairId, HTMLDivElement | null>());
   const targetRefs = useRef(new Map<PairId, HTMLDivElement | null>());
 
+  const selectedMode = modes.find((mode) => mode.id === selectedModeId) ?? modes[0];
+  const pairs = selectedMode?.pairs ?? EMPTY_PAIRS;
+  const activeModeLabel = selectedMode?.label ?? "Mode";
   const total = roundPairs.length;
   const acertos = Object.keys(placements).length;
-  const concluiu = acertos === total;
+  const concluiu = total > 0 && acertos === total;
+
+  const queueRound = useCallback(
+    (nextPairs: Pair[]) => {
+      const nextRound = pickRandomPairs(nextPairs, roundSize);
+
+      setPlacements({});
+      setActiveSourceId(null);
+      setIsCompletionDialogOpen(false);
+      setRecentMatchId(null);
+      setFlyingMatch(null);
+      setRoundPairs(nextRound);
+      setRightColumnOrder(shufflePairs(nextRound));
+    },
+    [roundSize]
+  );
 
   function resetGame() {
-    const nextRound = pickRandomPairs(pairs, roundSize);
-
-    setPlacements({});
-    setActiveSourceId(null);
-    setIsCompletionDialogOpen(false);
-    setRecentMatchId(null);
-    setFlyingMatch(null);
-    setRoundPairs(nextRound);
-    setRightColumnOrder(shufflePairs(nextRound));
+    queueRound(pairs);
   }
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
-      const nextRound = pickRandomPairs(pairs, roundSize);
+      if (pairs.length === 0) {
+        setPlacements({});
+        setActiveSourceId(null);
+        setIsCompletionDialogOpen(false);
+        setRecentMatchId(null);
+        setFlyingMatch(null);
+        setRoundPairs([]);
+        setRightColumnOrder([]);
+        return;
+      }
 
-      setRoundPairs(nextRound);
-      setRightColumnOrder(shufflePairs(nextRound));
+      queueRound(pairs);
     }, 0);
 
     return () => window.clearTimeout(timeout);
-  }, [pairs, roundSize]);
+  }, [pairs, queueRound]);
 
   useEffect(() => {
     if (recentMatchId == null) {
@@ -93,7 +121,14 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
 
   return (
     <>
-      <GameHeader acertos={acertos} total={total} onReset={resetGame} />
+      <GameHeader
+        acertos={acertos}
+        total={total}
+        selectedMode={selectedMode?.id ?? ""}
+        availableModes={modes}
+        onModeChange={setSelectedModeId}
+        onReset={resetGame}
+      />
 
       <DragDropProvider
         onDragStart={(event) => {
@@ -158,7 +193,7 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
         <DragOverlay className="pointer-events-none fixed left-0 top-0 z-50">
           {activeSourceId != null ? (
             <div className="max-w-[44vw] rounded-2xl border border-emerald-300 bg-emerald-100 px-3 py-2.5 text-xs font-bold text-emerald-950 shadow-2xl sm:max-w-none sm:px-5 sm:py-4 sm:text-base">
-              Can I have...
+              {activeModeLabel}
             </div>
           ) : null}
         </DragOverlay>
@@ -182,9 +217,9 @@ export function GameBoard({ pairs, roundSize, materialPdfPath }: GameBoardProps)
             <div className="flex h-full items-center justify-between gap-2 sm:gap-4">
               <div className="min-w-0">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-emerald-700 sm:text-xs sm:tracking-[0.18em]">
-                  Palavra
+                  Mode
                 </p>
-                <p className="mt-1 text-sm font-black sm:text-2xl">Can I have...</p>
+                <p className="mt-1 text-sm font-black sm:text-2xl">{activeModeLabel}</p>
               </div>
               <span className="shrink-0 rounded-full bg-emerald-600 px-2 py-1 text-[10px] font-semibold text-white sm:px-3 sm:text-sm">
                 Encaixando

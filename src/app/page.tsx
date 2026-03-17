@@ -1,6 +1,6 @@
 import { GameBoard } from "@/components/game/game-board";
 import {
-  HOTEL_PAIRS,
+  GAME_MODES,
   MATERIAL_PDF_PATH,
   ROUND_SIZE,
 } from "@/components/game/game-data";
@@ -12,7 +12,7 @@ export default function Home() {
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8">
         <GameHero />
         <GameBoard
-          pairs={HOTEL_PAIRS}
+          modes={GAME_MODES}
           roundSize={ROUND_SIZE}
           materialPdfPath={MATERIAL_PDF_PATH}
         />

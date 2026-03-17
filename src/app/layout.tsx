@@ -16,7 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", montserrat.variable)}>
+    <html
+      lang="en"
+      className={cn("font-sans", montserrat.variable)}
+      suppressHydrationWarning
+    >
       <body
         className={`${montserrat.className} antialiased`}
       >

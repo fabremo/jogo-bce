@@ -1,24 +1,51 @@
-﻿"use client";
+"use client";
 
 import { RotateCcw } from "lucide-react";
 
+import type { GameMode } from "@/components/game/game-data";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type GameHeaderProps = {
   acertos: number;
   total: number;
+  selectedMode: string;
+  availableModes: GameMode[];
+  onModeChange: (modeId: string) => void;
   onReset: () => void;
 };
 
-export function GameHeader({ acertos, total, onReset }: GameHeaderProps) {
+export function GameHeader({
+  acertos,
+  total,
+  selectedMode,
+  availableModes,
+  onModeChange,
+  onReset,
+}: GameHeaderProps) {
   return (
     <section className="flex flex-col gap-3">
       <div className="flex justify-center">
-        <p className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-center text-xl font-bold tracking-[0.18em] text-emerald-700 shadow-sm sm:px-5 sm:py-2 sm:text-2xl sm:tracking-[0.24em]">
-          Can I Have... + Complemento
-        </p>
+        <Select value={selectedMode} onValueChange={onModeChange}>
+          <SelectTrigger className="max-w-md">
+            <SelectValue placeholder="Selecione o modo" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableModes.map((mode) => (
+              <SelectItem key={mode.id} value={mode.id}>
+                {mode.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch text-center">
+      <div className="flex flex-col gap-3 text-center sm:flex-row sm:items-stretch">
         <ScoreCard label="Acertos" value={`${acertos}/${total}`} />
         <Button
           variant="outline"
